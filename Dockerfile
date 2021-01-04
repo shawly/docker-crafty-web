@@ -104,7 +104,7 @@ LABEL \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vendor="shawly" \
-      org.label-schema.docker.cmd="docker run -d --name=crafty_web -p 8000:8000 -p 25565:25565 -v \$HOME/minecraft_servers:/minecraft_servers:rw \$HOME/crafty_db:/crafty_db:rw shawly/crafty-web"
+      org.label-schema.docker.cmd="docker run -d --name=crafty_web -p 8000:8000 -p 25565:25565 -v \$HOME/crafty/servers:/minecraft_servers -v \$HOME/crafty/database:/crafty_db -v \$HOME/crafty/backups:/crafty_web/backups shawly/crafty-web"
 
 # Start s6
 ENTRYPOINT ["/init"]
