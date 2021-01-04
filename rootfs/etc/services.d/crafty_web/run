@@ -1,0 +1,4 @@
+#!/usr/bin/execlineb -P
+cd /crafty_web
+s6-setuidgid crafty
+/usr/local/bin/python /crafty_web/crafty.py -c "/crafty_web/configs/docker_config.yml"
