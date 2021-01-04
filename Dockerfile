@@ -32,6 +32,7 @@ ARG CRAFTY_WEB_REPO
 ARG CRAFTY_WEB_BRANCH
 ARG QEMU_ARCH
 ARG BUILD_DATE
+ARG VCS_REF
 ARG S6_OVERLAY_RELEASE
 
 ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE} \
@@ -102,6 +103,7 @@ LABEL \
       org.label-schema.description="Docker container for crafty-web" \
       org.label-schema.version="unknown" \
       org.label-schema.vcs-url="https://github.com/shawly/docker-crafty-web" \
+      org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vendor="shawly" \
