@@ -5,9 +5,9 @@ This is a Docker container for crafty-web. A webinterface for setting up and con
 
 ---
 
-[![crafty-web](https://dummyimage.com/400x110/ffffff/575757&text=Crafty Controller)](https://gitlab.com/crafty-controller/crafty-web)
+[![crafty-web](https://dummyimage.com/400x110/ffffff/575757&text=Crafty%20Controller)](https://gitlab.com/crafty-controller/crafty-web)
 
-crafty-web by [Phillip Tarrant](https://gitlab.com/crafty-controller/crafty-web).
+Crafty Controller by [Phillip Tarrant](https://gitlab.com/crafty-controller/crafty-web).
 
 ---
 ## Table of Content
