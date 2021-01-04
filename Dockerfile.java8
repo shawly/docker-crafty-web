@@ -98,13 +98,13 @@ EXPOSE 8000 \
 # Metadata
 LABEL \
       org.label-schema.name="crafty-web" \
-      org.label-schema.description="Docker container for crafty-web" \
+      org.label-schema.description="Docker container for crafty-web (with Java 8)" \
       org.label-schema.version="unknown" \
       org.label-schema.vcs-url="https://github.com/shawly/docker-crafty-web" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vendor="shawly" \
-      org.label-schema.docker.cmd="docker run -d --name=crafty_web -p 8000:8000 -p 25565:25565 -v \$HOME/crafty/servers:/minecraft_servers -v \$HOME/crafty/database:/crafty_db -v \$HOME/crafty/backups:/crafty_web/backups shawly/crafty-web"
+      org.label-schema.docker.cmd="docker run -d --name=crafty_web -p 8000:8000 -p 25565:25565 -v \$HOME/crafty/servers:/minecraft_servers -v \$HOME/crafty/database:/crafty_db -v \$HOME/crafty/backups:/crafty_web/backups shawly/crafty-web:java8"
 
 # Start s6
 ENTRYPOINT ["/init"]
