@@ -1,0 +1,42 @@
+#!/usr/bin/with-contenv sh
+
+INSTALL_JAVA8=${INSTALL_JAVA8:-false}
+INSTALL_JAVA11=${INSTALL_JAVA11:-true}
+
+echo '
+-------------------------------------
+Installing Java runtime
+-------------------------------------'
+
+if [ "$INSTALL_JAVA8" = true ] && [ ! -d "/usr/lib/jvm/java-1.8-openjdk" ]; then
+  echo '
+Installing Java 8...
+-------------------------------------'
+  apk add --no-cache openjdk8-jre
+fi
+
+if [ -d "/usr/lib/jvm/java-1.8-openjdk" ]; then
+  echo '
+-------------------------------------
+Java 8 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA11" = true ] && [ ! -d "/usr/lib/jvm/java-11-openjdk" ]; then
+  echo '
+Installing Java 11...
+-------------------------------------'
+  apk add --no-cache openjdk11-jre-headless
+fi
+
+if [ -d "/usr/lib/jvm/java-11-openjdk" ]; then
+  echo '
+-------------------------------------
+Java 11 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA8" = false ] && [ "$INSTALL_JAVA11" = false ]; then
+  echo 'Both environment variables INSTALL_JAVA8 and INSTALL_JAVA11 have been set to false! Skipping Java runtime install...
+-------------------------------------'
+fi

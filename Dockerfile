@@ -36,7 +36,9 @@ ARG S6_OVERLAY_RELEASE
 
 ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE} \
     CRAFTY_WEB_REPO=${CRAFTY_WEB_REPO} \
-    CRAFTY_WEB_BRANCH=${CRAFTY_WEB_BRANCH}
+    CRAFTY_WEB_BRANCH=${CRAFTY_WEB_BRANCH} \
+    INSTALL_JAVA11=true \
+    INSTALL_JAVA8=false
 
 # Add qemu-arm-static binary (copying /register is a necessary hack for amd64 systems)
 COPY --from=qemu /register /usr/bin/qemu-${QEMU_ARCH}-static* /usr/bin/
@@ -59,7 +61,6 @@ RUN \
     apk add --update --no-cache \
       curl \
       ca-certificates \
-      openjdk11-jre-headless \
       coreutils \
       shadow \
       bash \

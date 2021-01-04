@@ -91,6 +91,8 @@ of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 |`USER_ID`| ID of the user the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
 |`GROUP_ID`| ID of the group the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
 |`TZ`| [TimeZone] of the container.  Timezone can also be set by mapping `/etc/localtime` between the host and the container. | `Etc/UTC` |
+|`INSTALL_JAVA11`| This executes a script which installs the Java 11 runtime if it isn't already installed. For the Minecraft server to work, java 8 and/or 11 needs to be installed! | `true` |
+|`INSTALL_JAVA8`| This executes a script which installs the Java 8 runtime if it isn't already installed. Use this if you need Java 8, for legacy servers for example. | `false` |
 
 ### Data Volumes
 
@@ -154,6 +156,8 @@ services:
       - TZ: Europe/Berlin
       - USER_ID: 500
       - GROUP_ID: 500
+      - INSTALL_JAVA8: false
+      - INSTALL_JAVA11: true
     ports:
       - "25565:25565"
       - "8000:8000"
