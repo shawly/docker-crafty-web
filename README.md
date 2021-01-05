@@ -1,5 +1,5 @@
 # Docker container for Crafty Controller
-[![Docker Automated build](https://img.shields.io/docker/automated/shawly/crafty-web.svg)](https://hub.docker.com/r/shawly/crafty-web/) [![Docker Image](https://images.microbadger.com/badges/image/shawly/crafty-web.svg)](http://microbadger.com/#/images/shawly/crafty-web) ![Docker Pulls](https://img.shields.io/docker/pulls/shawly/crafty-web) [![Build Status](https://travis-ci.org/shawly/docker-crafty-web.svg?branch=master)](https://travis-ci.org/shawly/docker-crafty-web) [![GitHub Release](https://img.shields.io/github/release/shawly/docker-crafty-web.svg)](https://github.com/shawly/docker-crafty-web/releases/latest)
+[![Docker Automated build](https://img.shields.io/docker/automated/shawly/crafty-web.svg)](https://hub.docker.com/r/shawly/crafty-web/) ![Docker Pulls](https://img.shields.io/docker/pulls/shawly/crafty-web) [![Build Status](https://travis-ci.org/shawly/docker-crafty-web.svg?branch=master)](https://travis-ci.org/shawly/docker-crafty-web) [![GitHub Release](https://img.shields.io/github/release/shawly/docker-crafty-web.svg)](https://github.com/shawly/docker-crafty-web/releases/latest)
 
 This is a Docker container for Crafty Controller. A webinterface for setting up and controlling minecraft servers (e.g. Vanilla, Spigot, PaperMC, Sponge etc.).
 
