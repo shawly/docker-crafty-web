@@ -14,7 +14,7 @@ ARG QEMU_ARCH=amd64
 ARG PYTHON_VERSION=alpine
 
 # Set vars for s6 overlay
-ARG S6_OVERLAY_VERSION=v2.1.0.2
+ARG S6_OVERLAY_VERSION=v2.2.0.3
 ARG S6_OVERLAY_ARCH=amd64
 ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/download/${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCH}.tar.gz
 
@@ -39,7 +39,9 @@ ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE} \
     CRAFTY_WEB_REPO=${CRAFTY_WEB_REPO} \
     CRAFTY_WEB_BRANCH=${CRAFTY_WEB_BRANCH} \
     INSTALL_JAVA11=true \
-    INSTALL_JAVA8=false
+    INSTALL_JAVA8=false \
+    UMASK=022 \
+    FIX_OWNERSHIP=true
 
 # Add qemu-arm-static binary (copying /register is a necessary hack for amd64 systems)
 COPY --from=qemu /register /usr/bin/qemu-${QEMU_ARCH}-static* /usr/bin/

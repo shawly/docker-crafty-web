@@ -1,4 +1,8 @@
-#!/usr/bin/execlineb -P
+#!/usr/bin/with-contenv bash
+
 cd /crafty_web
-s6-setuidgid crafty
-/usr/local/bin/python /crafty_web/crafty.py -c "/crafty_web/configs/docker_config.yml"
+
+UMASK=${UMASK:-022}
+umask "$UMASK"
+
+s6-setuidgid crafty /usr/local/bin/python /crafty_web/crafty.py -c "/crafty_web/configs/docker_config.yml"

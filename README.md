@@ -93,6 +93,8 @@ of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 |`TZ`| [TimeZone] of the container.  Timezone can also be set by mapping `/etc/localtime` between the host and the container. | `Etc/UTC` |
 |`INSTALL_JAVA11`| This executes a script which installs the Java 11 runtime if it isn't already installed. For the Minecraft server to work, java 8 and/or 11 needs to be installed! | `true` |
 |`INSTALL_JAVA8`| This executes a script which installs the Java 8 runtime if it isn't already installed. Use this if you need Java 8, for legacy servers for example. | `false` |
+|`UMASK`| This sets the umask for the crafty control process in the container. | `022` |
+|`FIX_OWNERSHIP`| This executes a script which checks if the USER_ID & GROUP_ID changed from the default of 1000 and fixes the ownership of the /crafty_web folder if necessary, otherwise crafty_web wont't start. It's recommended to leave this enabled if you changed the USER_ID or GROUP_ID. | `true` |
 
 ### Data Volumes
 
