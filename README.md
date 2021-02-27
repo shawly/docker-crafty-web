@@ -1,5 +1,5 @@
 # Docker container for Crafty Controller
-[![Docker Automated build](https://img.shields.io/docker/cloud/automated/shawly/crafty-web)](https://hub.docker.com/r/shawly/crafty-web/) ![Docker Pulls](https://img.shields.io/docker/pulls/shawly/crafty-web) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/shawly/crafty-web/latest) [![GitHub Release](https://img.shields.io/github/release/shawly/docker-crafty-web.svg)](https://github.com/shawly/docker-crafty-web/releases/latest)
+[![Docker Automated build](https://img.shields.io/badge/docker%20build-automated-brightgreen)](https://github.com/shawly/docker-crafty-web/actions) [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/shawly/docker-crafty-web/Docker)](https://github.com/shawly/docker-crafty-web/actions) [![Docker Pulls](https://img.shields.io/docker/pulls/shawly/crafty-web)](https://hub.docker.com/r/shawly/crafty-web) [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/shawly/crafty-web/latest)](https://hub.docker.com/r/shawly/crafty-web) [![GitHub Release](https://img.shields.io/github/release/shawly/docker-crafty-web.svg)](https://github.com/shawly/docker-crafty-web/releases/latest)
 
 This is a Docker container for Crafty Controller. A webinterface for setting up and controlling minecraft servers (e.g. Vanilla, Spigot, PaperMC, Sponge etc.).
 
@@ -30,15 +30,16 @@ Crafty Controller by [Phillip Tarrant](https://gitlab.com/crafty-controller/craf
 
 The architectures supported by this image are:
 
-| Architecture | Tag | Status |
-| :----: | --- | ------ |
-| x86-64 | amd64-latest | working |
-| x86 | i386-latest | experimental |
-| arm64 | arm64v8-latest | experimental |
-| armv7 | arm32v7-latest | experimental |
-| armhf | arm32v6-latest | experimental |
+| Architecture | Status |
+| :----: | ------ |
+| x86-64 | working |
+| x86 | untested |
+| arm64 | untested |
+| armv7 | untested |
+| armhf | untested |
+| ppc64le | untested |
 
-*I'm declaring the arm images as **experimental** because I only own an older first generation RaspberryPi Model B+ I can't properly test the image on other devices, technically it should work on all RaspberryPi models and similar SoCs. While emulating the architecture with qemu works and can be used for testing, I can't guarantee that there will be no issues, just try it.*
+*I'm declaring the arm images as **untested** because I only own an older first generation RaspberryPi Model B+ I can't properly test the image on other devices, technically it should work on all RaspberryPi models and similar SoCs. While emulating the architecture with qemu works and can be used for testing, I can't guarantee that there will be no issues, just try it.*
 
 ## Quick Start
 
