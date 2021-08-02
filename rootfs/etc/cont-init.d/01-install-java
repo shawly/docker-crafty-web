@@ -2,6 +2,7 @@
 
 INSTALL_JAVA8=${INSTALL_JAVA8:-false}
 INSTALL_JAVA11=${INSTALL_JAVA11:-true}
+INSTALL_JAVA16=${INSTALL_JAVA16:-false}
 
 echo '
 -------------------------------------
@@ -36,7 +37,21 @@ Java 11 has been installed...
 -------------------------------------'
 fi
 
-if [ "$INSTALL_JAVA8" = false ] && [ "$INSTALL_JAVA11" = false ]; then
-  echo 'Both environment variables INSTALL_JAVA8 and INSTALL_JAVA11 have been set to false! Skipping Java runtime install...
+if [ "$INSTALL_JAVA16" = true ] && [ ! -d "/usr/lib/jvm/java-16-openjdk" ]; then
+  echo '
+Installing Java 16...
+-------------------------------------'
+  apk add --update --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted openjdk16-jre-headless
+fi
+
+if [ -d "/usr/lib/jvm/java-16-openjdk" ]; then
+  echo '
+-------------------------------------
+Java 16 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA8" = false ] && [ "$INSTALL_JAVA11" = false ] && [ "$INSTALL_JAVA16" = false ]; then
+  echo 'Environment variables INSTALL_JAVA8, INSTALL_JAVA11 and INSTALL_JAVA16 have been set to false! Skipping Java runtime install...
 -------------------------------------'
 fi

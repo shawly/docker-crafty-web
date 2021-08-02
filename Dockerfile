@@ -13,7 +13,7 @@ ARG S6_OVERLAY_BASE_URL=https://github.com/just-containers/s6-overlay/releases/d
 
 # Set CRAFTY vars
 ARG CRAFTY_WEB_REPO=https://gitlab.com/crafty-controller/crafty-web.git
-ARG CRAFTY_WEB_BRANCH=master
+ARG CRAFTY_WEB_BRANCH=amcmanu3-master-patch-20906
 
 # Set base images with s6 overlay download variable (necessary for multi-arch building via GitHub workflows)
 FROM python:${PYTHON_VERSION} as python-amd64
@@ -58,7 +58,8 @@ FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
 ARG CRAFTY_WEB_REPO
 ARG CRAFTY_WEB_BRANCH
 
-ENV INSTALL_JAVA11=true \
+ENV INSTALL_JAVA16=false \
+    INSTALL_JAVA11=true \
     INSTALL_JAVA8=false \
     UMASK=022 \
     FIX_OWNERSHIP=true
@@ -92,7 +93,7 @@ RUN \
     mkdir -p /var/log/crafty_web && \
     chown -R nobody:nogroup /var/log/crafty_web && \
   echo "Cloning crafty-web..." && \
-    git clone --depth 1 ${CRAFTY_WEB_REPO} /crafty_web && \
+    git clone --depth 1 ${CRAFTY_WEB_REPO} --no-single-branch /crafty_web && \
     git checkout ${CRAFTY_WEB_BRANCH} && \
     mkdir -p /minecraft_servers /crafty_db /crafty_web/backups && \
     chown -R crafty:crafty /crafty_web /minecraft_servers /crafty_db && \
