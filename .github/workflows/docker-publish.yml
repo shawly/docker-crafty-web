@@ -17,7 +17,7 @@ env:
   IMAGE_NAME: crafty-web
   IMAGE_TITLE: Crafty Controller
   IMAGE_DESCRIPTION: Docker container for Crafty Controller
-  APP_VERSION: 3.2.0
+  APP_VERSION: 3.3.0
 
 jobs:
   # Run tests.

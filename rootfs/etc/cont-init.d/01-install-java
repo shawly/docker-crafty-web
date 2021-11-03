@@ -1,8 +1,8 @@
 #!/usr/bin/with-contenv sh
 
 INSTALL_JAVA8=${INSTALL_JAVA8:-false}
-INSTALL_JAVA11=${INSTALL_JAVA11:-true}
-INSTALL_JAVA16=${INSTALL_JAVA16:-false}
+INSTALL_JAVA11=${INSTALL_JAVA11:-false}
+INSTALL_JAVA16=${INSTALL_JAVA16:-true}
 
 echo '
 -------------------------------------
