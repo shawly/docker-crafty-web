@@ -75,10 +75,14 @@ RUN \
   set -ex && \
   echo "Installing build dependencies..." && \
     apk add --update --no-cache --virtual build-dependencies \
-      git \
       build-base \
+      cargo \
+      git \
+      libffi-dev \
       mariadb-dev \
-      libffi-dev && \
+      openssl-dev \
+      python3-dev \
+      rust && \
     apk add --update --no-cache \
       curl \
       ca-certificates \
@@ -97,6 +101,8 @@ RUN \
     git checkout ${CRAFTY_WEB_BRANCH} && \
     mkdir -p /minecraft_servers /crafty_db /crafty_web/backups && \
     chown -R crafty:crafty /crafty_web /minecraft_servers /crafty_db && \
+  echo "Upgrading pip..." && \
+    pip3 install --upgrade pip && \
   echo "Installing python crafty_web..." && \
     pip3 install --no-cache -r requirements.txt && \
   echo "Removing unneeded build dependencies..." && \
