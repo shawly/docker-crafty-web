@@ -17,7 +17,7 @@ env:
   IMAGE_NAME: crafty-web
   IMAGE_TITLE: Crafty Controller
   IMAGE_DESCRIPTION: Docker container for Crafty Controller
-  APP_VERSION: 3.2.0
+  APP_VERSION: 3.3.0
 
 jobs:
   # Run tests.
@@ -65,6 +65,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Prepare
+      if: github.event_name != 'pull_request'
       id: prep
       run: |
         DOCKER_IMAGE=${{ github.repository_owner }}/$IMAGE_NAME
@@ -84,6 +85,7 @@ jobs:
         echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
     - name: Build and push
+      if: github.event_name != 'pull_request'
       id: docker_build
       uses: docker/build-push-action@v2
       with:

@@ -58,7 +58,8 @@ FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
 ARG CRAFTY_WEB_REPO
 ARG CRAFTY_WEB_BRANCH
 
-ENV INSTALL_JAVA11=true \
+ENV INSTALL_JAVA16=true \
+    INSTALL_JAVA11=false \
     INSTALL_JAVA8=false \
     UMASK=022 \
     FIX_OWNERSHIP=true
@@ -92,7 +93,7 @@ RUN \
     mkdir -p /var/log/crafty_web && \
     chown -R nobody:nogroup /var/log/crafty_web && \
   echo "Cloning crafty-web..." && \
-    git clone --depth 1 ${CRAFTY_WEB_REPO} /crafty_web && \
+    git clone --depth 1 ${CRAFTY_WEB_REPO} --no-single-branch /crafty_web && \
     git checkout ${CRAFTY_WEB_BRANCH} && \
     mkdir -p /minecraft_servers /crafty_db /crafty_web/backups && \
     chown -R crafty:crafty /crafty_web /minecraft_servers /crafty_db && \
