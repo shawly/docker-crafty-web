@@ -53,9 +53,49 @@ ARG S6_OVERLAY_BASE_URL
 ENV S6_OVERLAY_RELEASE="${S6_OVERLAY_BASE_URL}/s6-overlay-ppc64le.tar.gz"
 
 # Build crafty-web:master
-FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
+FROM python-${TARGETARCH:-amd64}${TARGETVARIANT} as builder
 
 ARG CRAFTY_WEB_RELEASE
+
+# Change working dir
+WORKDIR /crafty_web
+
+# Install build deps and install python dependencies
+RUN \
+  set -ex && \
+  echo "Installing build dependencies..." && \
+    apk add --update --no-cache \
+      build-base \
+      cargo \
+      git \
+      libffi-dev \
+      mariadb-dev \
+      openssl-dev \
+      python3-dev \
+      rust && \
+  echo "Cleaning up directories..." && \
+    rm -rf /tmp/*
+
+# Download Crafty Controller
+ADD ${CRAFTY_WEB_RELEASE} /tmp/crafty-web.tar.gz
+
+# Build wheels
+RUN \
+  set -ex && \
+  echo "Extracting crafty-web..." && \
+    tar xzf /tmp/crafty-web.tar.gz --strip-components=1 -C /crafty_web && \
+  echo "Upgrading pip..." && \
+    pip3 install --upgrade pip && \
+  echo "Building wheels for requirements..." && \
+    pip3 wheel --no-cache-dir --wheel-dir /usr/src/wheels -r requirements.txt && \
+  echo "Cleaning up directories..." && \
+    rm -f /usr/bin/register && \
+    rm -rf .gitlab docs docker && \
+    rm -f *.md .dockerignore .gitignore docker-compose.yml Dockerfile && \
+    rm -rf /tmp/*
+
+# Build crafty-web:master
+FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
 
 ENV INSTALL_JAVA16=true \
     INSTALL_JAVA11=false \
@@ -66,8 +106,9 @@ ENV INSTALL_JAVA16=true \
 # Download S6 Overlay
 ADD ${S6_OVERLAY_RELEASE} /tmp/s6overlay.tar.gz
 
-# Download Crafty Controller
-ADD ${CRAFTY_WEB_RELEASE} /tmp/crafty-web.tar.gz
+# Copy wheels & crafty-web
+COPY --from=builder /usr/src/wheels /usr/src/wheels
+COPY --chown=1000 --from=builder /crafty_web /crafty_web
 
 # Change working dir
 WORKDIR /crafty_web
@@ -85,8 +126,6 @@ RUN \
       tzdata && \
   echo "Extracting s6 overlay..." && \
     tar xzf /tmp/s6overlay.tar.gz -C / && \
-  echo "Extracting crafty-web..." && \
-    tar xzf /tmp/crafty-web.tar.gz --strip-components=1 -C /crafty_web && \
   echo "Creating crafty user..." && \
     useradd -u 1000 -U -M -s /bin/false crafty && \
     mkdir -p /var/log/crafty_web && \
@@ -95,34 +134,16 @@ RUN \
     chown -R crafty:crafty /crafty_web /minecraft_servers /crafty_db && \
   echo "Upgrading pip..." && \
     pip3 install --upgrade pip && \
+  echo "Install requirements..." && \
+    pip3 install --no-index --find-links=/usr/src/wheels -r requirements.txt && \
   echo "Cleaning up directories..." && \
     rm -f /usr/bin/register && \
-    rm -rf .gitlab docs docker && \
-    rm -f *.md .dockerignore .gitignore docker-compose.yml Dockerfile && \
+    # fix issue where german is set as default, changing language doesn't work anyway
+    rm -f /crafty_web/app/web/translations/de_DE.csv && \
     rm -rf /tmp/*
 
 # Add files
 COPY rootfs/ /
-
-# Install build deps and install python dependencies
-RUN \
-  set -ex && \
-  echo "Installing build dependencies..." && \
-    apk add --update --no-cache --virtual build-dependencies \
-      build-base \
-      cargo \
-      git \
-      libffi-dev \
-      mariadb-dev \
-      openssl-dev \
-      python3-dev \
-      rust && \
-  echo "Installing python crafty_web..." && \
-    pip3 install --no-cache -r requirements.txt && \
-  echo "Removing build dependencies..." && \
-    apk del build-dependencies && \
-  echo "Cleaning up directories..." && \
-    rm -rf /tmp/*
 
 # Define mountable directories
 VOLUME ["/minecraft_servers", "/crafty_db", "/crafty_web/backups"]
