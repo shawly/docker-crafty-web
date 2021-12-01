@@ -5,7 +5,7 @@
 #
 
 # Set python image version
-ARG PYTHON_VERSION=alpine
+ARG PYTHON_VERSION=alpine3.15
 
 # Set vars for s6 overlay
 ARG S6_OVERLAY_VERSION=v2.2.0.3
@@ -97,7 +97,8 @@ RUN \
 # Build crafty-web:master
 FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
 
-ENV INSTALL_JAVA16=true \
+ENV INSTALL_JAVA17=false \
+    INSTALL_JAVA16=true \
     INSTALL_JAVA11=false \
     INSTALL_JAVA8=false \
     UMASK=022 \

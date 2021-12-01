@@ -92,7 +92,8 @@ of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 |`USER_ID`| ID of the user the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
 |`GROUP_ID`| ID of the group the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
 |`TZ`| [TimeZone] of the container.  Timezone can also be set by mapping `/etc/localtime` between the host and the container. | `Etc/UTC` |
-|`INSTALL_JAVA16`| This executes a script which installs the Java 16 runtime if it isn't already installed. This version is needed for Minecraft version 1.17+ | `true` |
+|`INSTALL_JAVA17`| This executes a script which installs the Java 17 runtime if it isn't already installed. This version is needed for Minecraft version 1.18+ | `false` |
+|`INSTALL_JAVA16`| This executes a script which installs the Java 16 runtime if it isn't already installed. This version is needed for Minecraft version 1.17 | `true` |
 |`INSTALL_JAVA11`| This executes a script which installs the Java 11 runtime if it isn't already installed. For the Minecraft server to work, java 8 and/or 11 needs to be installed! | `false` |
 |`INSTALL_JAVA8`| This executes a script which installs the Java 8 runtime if it isn't already installed. Use this if you need Java 8, for legacy servers for example. | `false` |
 |`UMASK`| This sets the umask for the crafty control process in the container. | `022` |
@@ -163,6 +164,7 @@ services:
       - INSTALL_JAVA8: false
       - INSTALL_JAVA11: false
       - INSTALL_JAVA16: true
+      - INSTALL_JAVA17: false
     ports:
       - "25565:25565"
       - "8000:8000"
