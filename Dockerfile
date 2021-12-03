@@ -72,6 +72,7 @@ RUN \
       mariadb-dev \
       openssl-dev \
       python3-dev \
+      py3-cryptography \
       rust && \
   echo "Cleaning up directories..." && \
     rm -rf /tmp/*
