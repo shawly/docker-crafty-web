@@ -72,7 +72,6 @@ RUN \
       mariadb-dev \
       openssl-dev \
       python3-dev \
-      musl-dev \
       rust && \
   echo "Fixing armv6 and armv7 build by cloning cargo index manually" && \
     git clone --bare https://github.com/rust-lang/crates.io-index.git ~/.cargo/registry/index/github.com-1285ae84e5963aae && \
