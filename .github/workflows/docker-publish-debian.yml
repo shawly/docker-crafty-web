@@ -1,4 +1,4 @@
-name: Build alpine image
+name: Build debian image
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Test amd64 build
-        run: docker build . --file Dockerfile
+        run: docker build . --file Dockerfile.debian
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -47,9 +47,10 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
+          file: Dockerfile.debian
           target: testing
           platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6
-          tags: crafty-web:test
+          tags: crafty-web:test-debian
 
   # Build images.
   build:
@@ -92,8 +93,8 @@ jobs:
         [ "$VERSION_FULL" == "main" ] && VERSION_FULL=edge
         [ ${{ github.ref }} == refs/pull/* ] && VERSION_FULL=pr-${{ github.event.number }}
 
-        TAGS="${DOCKER_IMAGE}:${VERSION_FULL},${DOCKER_IMAGE}:${VERSION_FULL}-alpine"  
-        [ "$VERSION_FULL" != "edge" -a ${VERSION_FULL:0:3} != "pr-" ] && TAGS="$TAGS,${DOCKER_IMAGE}:${VERSION_MINOR},${DOCKER_IMAGE}:${VERSION_MINOR}-alpine,${DOCKER_IMAGE}:${VERSION_MAJOR},${DOCKER_IMAGE}:${VERSION_MAJOR}-alpine,${DOCKER_IMAGE}:latest,${DOCKER_IMAGE}:latest-alpine"
+        TAGS="${DOCKER_IMAGE}:${VERSION_FULL}-debian"  
+        [ "$VERSION_FULL" != "edge" -a ${VERSION_FULL:0:3} != "pr-" ] && TAGS="$TAGS,${DOCKER_IMAGE}:${VERSION_MINOR}-debian,${DOCKER_IMAGE}:${VERSION_MAJOR}-debian,${DOCKER_IMAGE}:latest-debian"
 
         echo ::set-output name=version::${VERSION_FULL}
         echo ::set-output name=tags::${TAGS}
@@ -114,7 +115,8 @@ jobs:
       with:
         builder: ${{ steps.buildx.outputs.name }}
         context: .
-        platforms: linux/amd64,linux/386,linux/arm64
+        file: Dockerfile.debian
+        platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.prep.outputs.tags }}
         labels: |

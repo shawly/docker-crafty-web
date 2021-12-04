@@ -1,11 +1,11 @@
 #
-# Crafty Controller Dockerfile
+# Crafty Controller Dockerfile.debian
 #
 # https://github.com/shawly/docker-crafty-web
 #
 
 # Set python image version
-ARG PYTHON_VERSION=alpine3.15
+ARG PYTHON_VERSION=slim
 
 # Set vars for s6 overlay
 ARG S6_OVERLAY_VERSION=v2.2.0.3
@@ -55,6 +55,8 @@ ENV S6_OVERLAY_RELEASE="${S6_OVERLAY_BASE_URL}/s6-overlay-ppc64le.tar.gz"
 # Test java install scripts
 FROM python-${TARGETARCH:-amd64}${TARGETVARIANT} as testing
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV INSTALL_JAVA17=true \
     INSTALL_JAVA11=true \
     INSTALL_JAVA8=true
@@ -63,13 +65,15 @@ ENV INSTALL_JAVA17=true \
 RUN \
   set -ex && \
   echo "Installing runtime dependencies..." && \
-    apk add --update --no-cache \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
       curl \
       ca-certificates \
       coreutils \
-      shadow \
       bash \
-      tzdata
+      tzdata \
+      apt-utils \
+      software-properties-common
 
 # Add files
 COPY rootfs/ /
@@ -77,15 +81,16 @@ COPY rootfs/ /
 # Run test (build fails if tests fail)
 RUN \
   echo "Testing java install scripts..." && \
-    sed -i 's/with-contenv/env/g' /etc/cont-init.d/01-install-java-alpine && \
-    sed -i '2 i\set -ex' /etc/cont-init.d/01-install-java-alpine && \
-    chmod +x /etc/cont-init.d/01-install-java-alpine && \
-    bash -c "/etc/cont-init.d/01-install-java-alpine"
+    sed -i 's/with-contenv/env/g' /etc/cont-init.d/01-install-java-debian && \
+    sed -i '2 i\set -ex' /etc/cont-init.d/01-install-java-debian && \
+    chmod +x /etc/cont-init.d/01-install-java-debian && \
+    bash -c "/etc/cont-init.d/01-install-java-debian"
 
 # Build crafty-web:master
 FROM python-${TARGETARCH:-amd64}${TARGETVARIANT} as builder
 
 ARG CRAFTY_WEB_RELEASE
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Change working dir
 WORKDIR /crafty_web
@@ -94,15 +99,16 @@ WORKDIR /crafty_web
 RUN \
   set -ex && \
   echo "Installing build dependencies..." && \
-    apk add --update --no-cache \
-      build-base \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+      build-essential \
       cargo \
       git \
       libffi-dev \
-      mariadb-dev \
-      openssl-dev \
+      libssl-dev \
       python3-dev \
-      rust && \
+      libmariadb-dev \
+      rustc && \
   echo "Fixing armv6 and armv7 build by cloning cargo index manually" && \
     git clone --bare https://github.com/rust-lang/crates.io-index.git ~/.cargo/registry/index/github.com-1285ae84e5963aae && \
   echo "Cleaning up directories..." && \
@@ -129,6 +135,8 @@ RUN \
 # Build crafty-web:master
 FROM python-${TARGETARCH:-amd64}${TARGETVARIANT}
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 ENV INSTALL_JAVA17=true \
     INSTALL_JAVA11=false \
     INSTALL_JAVA8=false \
@@ -149,13 +157,15 @@ WORKDIR /crafty_web
 RUN \
   set -ex && \
   echo "Installing runtime dependencies..." && \
-    apk add --update --no-cache \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
       curl \
       ca-certificates \
       coreutils \
-      shadow \
       bash \
-      tzdata && \
+      tzdata \
+      apt-utils \
+      software-properties-common && \
   echo "Extracting s6 overlay..." && \
     tar xzf /tmp/s6overlay.tar.gz -C / && \
   echo "Creating crafty user..." && \

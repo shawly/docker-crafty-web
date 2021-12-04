@@ -1,0 +1,87 @@
+#!/usr/bin/with-contenv sh
+
+INSTALL_JAVA8=${INSTALL_JAVA8:-false}
+INSTALL_JAVA11=${INSTALL_JAVA11:-false}
+INSTALL_JAVA17=${INSTALL_JAVA17:-true}
+INSTALL_PATH_SUFFIX=""
+
+eval $(cat /etc/*release | grep ID)
+if [ ! "$ID" = "debian" ]; then
+  exit 0
+fi
+
+export DEBIAN_FRONTEND=noninteractive
+
+if [ `uname -m` = "aarch64" ]; then
+  INSTALL_PATH_SUFFIX="-arm64"
+fi
+
+if [ `uname -m` = "armv6l" ]; then
+  INSTALL_PATH_SUFFIX="-armel"
+fi
+
+if [ `uname -m` = "armv7l" ]; then
+  INSTALL_PATH_SUFFIX="-armhf"
+fi
+
+if [ `uname -m` = "i386" ] || [ `uname -m` = "i686" ]; then
+  INSTALL_PATH_SUFFIX="-i386"
+fi
+
+if [ `uname -m` = "x86_64" ]; then
+  INSTALL_PATH_SUFFIX="-amd64"
+fi
+
+echo '
+-------------------------------------
+Installing Java runtime
+-------------------------------------'
+
+if [ "$INSTALL_JAVA8" = true ] && [ ! -d "/usr/lib/jvm/java-8-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+Installing Java 8...
+-------------------------------------'
+  apt-add-repository 'deb http://security.debian.org/debian-security stretch/updates main'
+  apt-get update
+  apt-get install -y --no-install-recommends openjdk-8-jre-headless
+fi
+
+if [ -d "/usr/lib/jvm/java-8-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+-------------------------------------
+Java 8 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA11" = true ] && [ ! -d "/usr/lib/jvm/java-11-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+Installing Java 11...
+-------------------------------------'
+  apt-get install -y --no-install-recommends openjdk-11-jre-headless
+fi
+
+if [ -d "/usr/lib/jvm/java-11-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+-------------------------------------
+Java 11 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA17" = true ] && [ ! -d "/usr/lib/jvm/java-17-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+Installing Java 17...
+-------------------------------------'
+  apt-get install -y --no-install-recommends openjdk-17-jre-headless
+fi
+
+if [ -d "/usr/lib/jvm/java-17-openjdk${INSTALL_PATH_SUFFIX}" ]; then
+  echo '
+-------------------------------------
+Java 17 has been installed...
+-------------------------------------'
+fi
+
+if [ "$INSTALL_JAVA8" = false ] && [ "$INSTALL_JAVA11" = false ] && [ "$INSTALL_JAVA17" = false ]; then
+  echo 'Environment variables INSTALL_JAVA8, INSTALL_JAVA11 and INSTALL_JAVA17 have been set to false! Skipping Java runtime install...
+-------------------------------------'
+fi
