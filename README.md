@@ -33,10 +33,10 @@ The architectures supported by this image are:
 | Architecture | Status | Note |
 | :----: | ------ | ---- |
 | x86-64 | working | |
-| x86 | untested | |
+| x86 | untested | Alpine support dropped, use Debian image `shawly/crafty-web:latest-debian` |
 | arm64 | working | |
-| armv7 | untested | Alpine support dropped, use Debian image for RPi2 `shawly/crafty-web:latest-debian` |
-| armhf | untested | Alpine support dropped, use Debian image for RPi0/RPi1 `shawly/crafty-web:latest-debian` |
+| armv7 | untested | Alpine support dropped, use Debian image `shawly/crafty-web:latest-debian` |
+| armhf | untested | Alpine support dropped, use Debian image `shawly/crafty-web:latest-debian` |
 
 *I'm declaring the arm images as **untested** because I only own an older first generation RaspberryPi Model B+ I can't properly test the image on other devices, technically it should work on all RaspberryPi models and similar SoCs. While emulating the architecture with qemu works and can be used for testing, I can't guarantee that there will be no issues, just try it.*
 

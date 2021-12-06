@@ -10,8 +10,15 @@ on:
     tags:
       - v*
 
+    # Ignore readme changes
+    paths-ignore:
+      - '**/README.md'
+
   # Run tests for any PRs.
   pull_request:
+    # Ignore readme changes
+    paths-ignore:
+      - '**/README.md'
 
 env:
   IMAGE_NAME: crafty-web
